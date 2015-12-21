@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="../src/sipuni-calltracking.js"></script>
+</head>
+<body>
+
+    <div>Phone: <span class="ct_phone">+7 888 888-88-88</span></div>
+
+    <script>
+        sipuniCalltracking({
+            targets: '.ct_phone',
+            default_value: '+7 999 999-99-99',
+            callback: function(){console.log('callback');}
+        });
+    </script>
+</body>
+</html>
