@@ -189,7 +189,7 @@
     /**
      * Parameters manipulation methods
      */
-    var params = {
+    var dict = {
 
         /**
          * Updated onde dictionary with the elements of another one.
@@ -215,7 +215,22 @@
            params.update(result, dict1);
            params.update(result, dict2);
            return result;
-       }
+        },
+
+        /**
+         * Returns dictionary keys
+         * @param dict dictionary to search for
+         * @returns an array with keys
+         */
+        keys: function(dict){
+            var keys = [];
+            for (var key in dict) {
+                if (dictionary.hasOwnProperty(key)) {
+                    keys.push(key);
+                }
+            }
+            return keys;
+        }
 
     };
 
@@ -305,12 +320,64 @@
 
     };
 
+    /**
+     * Finds a phone number matching conditions
+     */
+    var tracker = {
 
+        find: function(sources, phones, src_url, dst_url){
+            for (var i=0; i<phones.length; i++){
+                var phone = phones[i];
+                if(sources.hasOwnProperty(phone['src'])){
+                    if(tracker.match(sources[phone['src']], src_url, dst_url)){
+                        return phone;
+                    }
+                }
+            }
+            return null;
+        },
+
+        match: function(source, src_url, dst_url){
+
+            var subject=null;
+            var condition = null;
+            var keys = dict.keys(source);
+
+            for(var i=0; i<keys.length; i++){
+                var key = keys[i];
+                if( key=='ref' ){
+                    subject = src_url;
+                    condition = source[key];
+                }else if( key.indexOf('utm_')>-1 ){
+                    subject = query.getParam(dst_url, key);
+                    condition = source[key];
+                }else if( key == 'dst' ){
+                    subject = dst_url;
+                    condition = source[key];
+                }
+            }
+
+            if(!subject || !condition){
+                return false;
+            }
+
+            if(type.isRegExp(condition)){
+                return condition.exec(subject);
+            }else if(typeof(condition)=='string'){
+                return subject.indexOf(condition)>-1;
+            }else if(type.isFunction(condition)){
+                return condition(subject);
+            }
+
+            return false;
+        }
+
+    };
 
 
     return function(user_params) {
 
-        var updated_params = params.merge(default_params, user_params);
+        var updated_params = dict.merge(default_params, user_params);
 
 //        var placer  = actions.place,
 //            targets = actions.getTargets(params.targets);
