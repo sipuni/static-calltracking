@@ -12,7 +12,16 @@
         sipuniCalltracking({
             targets: '.ct_phone',
             default_value: '+7 999 999-99-99',
-            callback: function(){console.log('callback');}
+            callback: function(){console.log('callback');},
+            sources: {
+                'organic':{'ref':/(google|yandex|rambler|bing|yahoo)/ig},
+                'social':{'ref':/(twitter|facebook|linkedin|vk\.com|odnoklassniki)/ig},
+                'email':{'utm_source':'email'}
+            },
+            phones: [
+                {'src':['organic', 'social'], 'phone1':'+75555555555', 'phone2': '+79995555555'},
+                {'src':'email', 'phone1':'+73333333333', 'phone2': '+79993333333'},
+            ]
         });
     </script>
 </body>
