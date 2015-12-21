@@ -18,11 +18,18 @@
 Задайте массив источников и соответсвующие им номера телефонов.
 ```
 <script>
-  window.ct_phones_map = [
-     {'src':'organic', 'phone1':'+74996472301'},
-     {'utm_source':'email', 'phone1':'+74996472302'},
-     {'utm_campaign':'New Year', 'phone1':'+74996472303'},
-     {'src':'habrahabr', 'phone1':'+74996472304'},
-  ];
+    sipuniCalltracking({
+      targets: ['.ct_phone1', 'ct_phone2'],
+      default_value: '+79999999999',
+      sources: {
+        'organic':{'ref':/(google|yandex|rambler|bing|yahoo)/ig},
+        'social':{'ref':/(twitter|facebook|linkedin|vk\.com|odnoklassniki)/ig},
+        'email':{'utm_source':'email'},
+      },
+      phones: [
+        {'src':['organic', 'social'], 'phone1':'+75555555555', 'phone2': '+79995555555'},
+        {'src':'email', 'phone1':'+73333333333', 'phone2': '+79993333333'},
+      ]
+    });
 </script>
 ```
