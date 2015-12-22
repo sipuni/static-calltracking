@@ -9,20 +9,26 @@
     <div>Phone: <span class="ct_phone">+7 888 888-88-88</span></div>
 
     <script>
+        wnd = {};
+        wnd.location = {};
+        wnd.location.href = 'http://google.com';
+        wnd.document = {};
+        wnd.document.referrer = 'http://abc.com/landing.html';
+
         sipuniCalltracking({
             targets: '.ct_phone',
-            default_value: '+7 999 999-99-99',
             callback: function(){console.log('callback');},
             sources: {
-                'organic':{'ref':/(google|yandex|rambler|bing|yahoo)/ig},
-                'social':{'ref':/(twitter|facebook|linkedin|vk\.com|odnoklassniki)/ig},
-                'email':{'utm_source':'email'}
+                'organic':{'ref':       /(google|yandex|rambler|bing|yahoo)/ig},
+                'social':{'ref':        /(twitter|facebook|linkedin|vk\.com|odnoklassniki)/ig},
+                'email':{'utm_source':  'email'}
             },
             phones: [
-                {'src':['organic', 'social'], 'phone1':'+75555555555', 'phone2': '+79995555555'},
-                {'src':'email', 'phone1':'+73333333333', 'phone2': '+79993333333'},
-            ]
-        });
+                {'src':'organic',   'phone1':'+75555555555', 'phone2': '+79995555555'},
+                {'src':'email',     'phone1':'+73333333333', 'phone2': '+79993333333'},
+            ],
+            default_phone: {'phone1':'+71111111111', 'phone2': '+79991111111'}
+        }, wnd);
     </script>
 </body>
 </html>

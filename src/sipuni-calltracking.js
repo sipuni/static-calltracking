@@ -203,12 +203,14 @@
          * @param dict_src source dictionary
          */
         update: function  (dict_dst, dict_src) {
-            dict_dst = dict_dst || {};
+            var is_array = type.isArray(dict_src);
+            dict_dst = dict_dst || (is_array?[]:{});
             for (var prop in dict_src) {
-                if (type.isDictionary(dict_src[prop])) {
-                    dict_dst[prop] = dict.update(dict_dst[prop], dict_src[prop]);
+                var v = dict_src[prop];
+                if (type.isDictionary(v)) {
+                    dict_dst[prop] = dict.update(dict_dst[prop], v);
                 } else {
-                    dict_dst[prop] = dict_src[prop];
+                    dict_dst[prop] = v;
                 }
             }
             return dict_dst;
@@ -232,7 +234,7 @@
          * @param dict dictionary to search for
          * @returns an array with keys
          */
-        keys: function(dict){
+        keys: function(dictionary){
             var keys = [];
             for (var key in dict) {
                 if (dictionary.hasOwnProperty(key)) {
@@ -336,14 +338,17 @@
     var tracker = {
 
         find: function(sources, phones, src_url, dst_url){
+
             for (var i=0; i<phones.length; i++){
                 var phone = phones[i];
-                if(sources.hasOwnProperty(phone['src'])){
-                    if(tracker.match(sources[phone['src']], src_url, dst_url)){
+                var src = phone['src'];
+                if(sources.hasOwnProperty(src)){
+                    if(tracker.match(sources[src], src_url, dst_url)){
                         return phone;
                     }
                 }
             }
+
             return null;
         },
 
@@ -354,7 +359,9 @@
             var keys = dict.keys(source);
 
             for(var i=0; i<keys.length; i++){
+
                 var key = keys[i];
+
                 if( key=='ref' ){
                     subject = src_url;
                     condition = source[key];
@@ -371,26 +378,30 @@
                 return false;
             }
 
-            if(type.isRegExp(condition)){
-                return condition.exec(subject);
-            }else if(typeof(condition)=='string'){
-                return subject.indexOf(condition)>-1;
-            }else if(type.isFunction(condition)){
-                return condition(subject);
-            }
-
-            return false;
+            return (
+                (type.isRegExp(condition) && condition.exec(subject)) ||
+                (typeof(condition)=='string' && subject.indexOf(condition)>-1) ||
+                (type.isFunction(condition) && condition(subject))
+            );
         }
 
     };
 
 
-    return function(user_params) {
+    return function(user_params, wnd) {
 
         var updated_params = dict.merge(default_params, user_params);
-        console.log(user_params);
-        console.log(default_params);
-        console.log(updated_params);
+
+        var phone = tracker.find(
+            updated_params['sources'],
+            updated_params['phones'],
+            wnd.document.referrer,
+            wnd.location.href);
+
+        if(phone === null)
+            phone = updated_params['default_phone'];
+
+        console.log(phone);
 //        var placer  = actions.place,
 //            targets = actions.getTargets(params.targets);
 //
