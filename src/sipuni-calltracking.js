@@ -76,6 +76,12 @@
                 );
         },
 
+        isDictionary: Array.isArray || function(o) {
+            return (
+                typeof o === 'object' && Object.prototype.toString.call(o) === '[object Object]'
+                );
+        },
+
         isRegExp: function(o) {
             return (
                 Object.prototype.toString.call(o) === '[object RegExp]'
@@ -192,16 +198,20 @@
     var dict = {
 
         /**
-         * Updated onde dictionary with the elements of another one.
+         * Updated one dictionary with the elements of another one.
          * @param dict_dst destination dictionary
          * @param dict_src source dictionary
          */
-        update: function(dict_dst, dict_src){
-            for (var property in dict_src) {
-                if (dict_src.hasOwnProperty(property)) {
-                    dict_dst[property] = dict_src[property];
+        update: function  (dict_dst, dict_src) {
+            dict_dst = dict_dst || {};
+            for (var prop in dict_src) {
+                if (type.isDictionary(dict_src[prop])) {
+                    dict_dst[prop] = dict.update(dict_dst[prop], dict_src[prop]);
+                } else {
+                    dict_dst[prop] = dict_src[prop];
                 }
             }
+            return dict_dst;
         },
 
         /**
@@ -212,8 +222,8 @@
          */
         merge: function(dict1, dict2){
            var result = {};
-           params.update(result, dict1);
-           params.update(result, dict2);
+           dict.update(result, dict1);
+           dict.update(result, dict2);
            return result;
         },
 
@@ -378,7 +388,9 @@
     return function(user_params) {
 
         var updated_params = dict.merge(default_params, user_params);
-
+        console.log(user_params);
+        console.log(default_params);
+        console.log(updated_params);
 //        var placer  = actions.place,
 //            targets = actions.getTargets(params.targets);
 //
