@@ -244,6 +244,12 @@
                 }
             }
             return keys;
+        },
+
+        getVal: function(dictionary, key, default_value) {
+            if (!dictionary || !dictionary.hasOwnProperty(key))
+                return default_value;
+            return dictionary[key];
         }
 
     };
@@ -330,6 +336,13 @@
 
         getTargets: function(selectors) {
             return select.call(document, selectors);
+        },
+
+        execCallback: function(phone, src_url, dst_url, options) {
+            var cb = dict.getVal(options, 'callback', null);
+            if (cb && type.isFunction(cb)){
+                cb(phone, src_url, dst_url, options);
+            }
         }
 
     };
@@ -406,6 +419,8 @@
         var phone = null;
         var sources = options['sources'];
         var phones = options['phones'];
+        var src_url = wnd.document.referrer;
+        var dst_url = wnd.location.href;
 
         // find from cookies first
         var existing_src = cookies.get(options['cookie_key']);
@@ -421,8 +436,8 @@
             phone = tracker.find(
                 sources,
                 phones,
-                wnd.document.referrer,
-                wnd.location.href);
+                src_url,
+                dst_url);
 
             // store in cookies
             if(phone !== null){
@@ -436,7 +451,7 @@
         }
 
         // callback
-        // TODO:
+        actions.execCallback(phone, src_url, dst_url, options);
 
         // insert
         if (phone){
