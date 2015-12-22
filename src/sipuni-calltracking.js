@@ -236,7 +236,7 @@
          */
         keys: function(dictionary){
             var keys = [];
-            for (var key in dict) {
+            for (var key in dictionary) {
                 if (dictionary.hasOwnProperty(key)) {
                     keys.push(key);
                 }
@@ -401,7 +401,7 @@
         if(phone === null)
             phone = updated_params['default_phone'];
 
-        console.log(phone);
+        console.log('phone', phone);
 //        var placer  = actions.place,
 //            targets = actions.getTargets(params.targets);
 //
