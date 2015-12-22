@@ -20,12 +20,12 @@
             callback: function(){console.log('callback');},
             sources: {
                 'organic':{'ref':       /(google|yandex|rambler|bing|yahoo)/ig},
-                'social':{'ref':        /(twitter|facebook|linkedin|vk\.com|odnoklassniki)/ig},
+                'social':{'ref':        /(twitter|facebook|linkedin|odnoklassniki)/ig},
                 'email':{'utm_source':  'email'}
             },
             phones: [
-                {'src':'organic',   'phone1':'+75555555555', 'phone2': '+79995555555'},
                 {'src':'email',     'phone1':'+73333333333', 'phone2': '+79993333333'},
+                {'src':'organic',   'phone1':'+75555555555', 'phone2': '+79995555555'},
             ],
             default_phone: {'phone1':'+71111111111', 'phone2': '+79991111111'}
         }, wnd);

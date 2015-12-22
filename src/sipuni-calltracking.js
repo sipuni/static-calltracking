@@ -17,7 +17,7 @@
      * Default parameters
      * Those parameters are overridden with user parameters passed during initialization
      */
-    var default_params = {
+    var default_options = {
         targets: '.ct_phone',
         default_value: null,
         callback: null,
@@ -25,7 +25,9 @@
             'organic':{'ref':/(google|yandex|rambler|bing|yahoo)/ig},
             'social':{'ref':/(twitter|facebook|linkedin|vk\.com|odnoklassniki)/ig},
             'email':{'utm_source':'email'}
-        }
+        },
+        cookie_key: 'sipunicts',
+        cookie_ttl_days: 30*3
     };
 
     /**
@@ -362,11 +364,11 @@
 
                 var key = keys[i];
 
-                if( key=='ref' ){
-                    subject = src_url;
-                    condition = source[key];
-                }else if( key.indexOf('utm_')>-1 ){
+                if( key.indexOf('utm_')>-1 ){
                     subject = query.getParam(dst_url, key);
+                    condition = source[key];
+                }else if( key=='ref' ){
+                    subject = src_url;
                     condition = source[key];
                 }else if( key == 'dst' ){
                     subject = dst_url;
@@ -383,23 +385,64 @@
                 (typeof(condition)=='string' && subject.indexOf(condition)>-1) ||
                 (type.isFunction(condition) && condition(subject))
             );
+        },
+
+        findBySrc: function(phones, src){
+            for (var i=0; i<phones.length; i++){
+                var phone = phones[i];
+                if (phone.hasOwnProperty('src') && phone['src'] == src){
+                    return phone;
+                }
+            }
+            return null;
         }
 
     };
 
 
-    return function(user_params, wnd) {
+    return function(user_options, wnd) {
 
-        var updated_params = dict.merge(default_params, user_params);
+        var options = dict.merge(default_options, user_options);
+        var phone = null;
+        var sources = options['sources'];
+        var phones = options['phones'];
 
-        var phone = tracker.find(
-            updated_params['sources'],
-            updated_params['phones'],
-            wnd.document.referrer,
-            wnd.location.href);
+        // find from cookies first
+        var existing_src = cookies.get(options['cookie_key']);
+        if(existing_src && sources.hasOwnProperty(existing_src)){
 
-        if(phone === null)
-            phone = updated_params['default_phone'];
+            phone = tracker.findBySrc(phones, existing_src);
+
+        }
+
+        // find from urls
+        if( phone === null ){
+
+            phone = tracker.find(
+                sources,
+                phones,
+                wnd.document.referrer,
+                wnd.location.href);
+
+            // store in cookies
+            if(phone !== null){
+                cookies.set(options['cookie_key'], phone['src'], options['cookie_ttl_days']);
+            }
+        }
+
+        // use default
+        if(phone === null){
+            phone = options['default_phone'];
+        }
+
+        // callback
+        // TODO:
+
+        // insert
+        if (phone){
+            var targets = actions.getTargets(options['targets']);
+            actions.place(targets, phone['phone1']);
+        }
 
         console.log('phone', phone);
 //        var placer  = actions.place,
