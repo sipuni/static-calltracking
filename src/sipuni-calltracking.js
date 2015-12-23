@@ -18,7 +18,7 @@
      * Those parameters are overridden with user parameters passed during initialization
      */
     var default_options = {
-        targets: '.ct_phone',
+        targets: ['.ct_phone'],
         default_value: null,
         callback: null,
         sources: {
@@ -210,7 +210,7 @@
             for (var prop in dict_src) {
                 var v = dict_src[prop];
                 if (type.isDictionary(v)) {
-                    dict_dst[prop] = dict.update(dict_dst[prop], v);
+                    dict_dst[prop] = dict.update(null, v);
                 } else {
                     dict_dst[prop] = v;
                 }
@@ -246,81 +246,17 @@
             return keys;
         },
 
+        /**
+         * Returns a value from the dictionary or default value
+         * @param dictionary
+         * @param key
+         * @param default_value
+         * @returns a value of default_value
+         */
         getVal: function(dictionary, key, default_value) {
             if (!dictionary || !dictionary.hasOwnProperty(key))
                 return default_value;
             return dictionary[key];
-        }
-
-    };
-
-    var core = {
-
-        go: function(placer, targets, params) {
-
-            //console.log(placer, targets, params);
-            return;
-
-            var terms = params.conditions;
-
-            for (var i = 0; i < terms.length; i++) {
-
-                if (this.isIncompatibleArrays(terms[i].check, terms[i].when)) continue;
-
-                if (this.isCompatibleArrays(terms[i].check, terms[i].when)) {
-                    var place_it = false;
-                    for (var ii = 0; ii < terms[i].check.length; ii++) {
-                        if (this.isMatch(terms[i].check[ii], terms[i].when[ii])) {
-                            place_it = true;
-                        } else {
-                            place_it = false;
-                            break;
-                        }
-                    }
-                    if (place_it) {
-                        placer(targets, terms[i].place);
-                        this.execCallback(params.callback, terms[i].check, terms[i].when, terms[i].place);
-                        return true;
-                    }
-                }
-
-                if (this.isMatch(terms[i].check, terms[i].when)) {
-                    placer(targets, terms[i].place);
-                    this.execCallback(params.callback, terms[i].check, terms[i].when, terms[i].place);
-                    return true;
-                }
-
-            }
-
-            // Oops, no match
-            placer(targets, params.default_value);
-            this.execCallback(params.callback, false, false, params.default_value);
-            return true;
-
-        },
-
-        isIncompatibleArrays: function(check, when) {
-            return (
-                type.isArray(check) && type.isArray(when) && check.length !== when.length
-                );
-        },
-
-        isCompatibleArrays: function(check, when) {
-            return (
-                type.isArray(check) && type.isArray(when) && check.length === when.length
-                );
-        },
-
-        isMatch: function(check, when) {
-            return (
-                (type.isRegExp(when) && check.match(when)) ||
-                    (!type.isRegExp(when) && type.isArray(when) && when.indexOf(check) !== -1) ||
-                    (!type.isRegExp(when) && !type.isArray(when) && when === check)
-                );
-        },
-
-        execCallback: function(cb, check, when, place) {
-            if (cb && type.isFunction(cb)) cb(check, when, place);
         }
 
     };
@@ -341,8 +277,9 @@
         execCallback: function(phone, src_url, dst_url, options) {
             var cb = dict.getVal(options, 'callback', null);
             if (cb && type.isFunction(cb)){
-                cb(phone, src_url, dst_url, options);
+                return cb(phone, src_url, dst_url, options);
             }
+            return null;
         }
 
     };
@@ -450,21 +387,18 @@
             phone = options['default_phone'];
         }
 
-        // callback
-        actions.execCallback(phone, src_url, dst_url, options);
-
-        // insert
+        // insert phone numbers
         if (phone){
-            var targets = actions.getTargets(options['targets']);
-            actions.place(targets, phone['phone1']);
+            var targets = options['targets'];
+            var numbers = phone['phone'];
+            for(var i=0, l1=targets.length, l2=numbers.length; i<Math.min(l1, l2); i++){
+                var elements = actions.getTargets(targets[i]);
+                actions.place(elements, numbers[i]);
+            }
         }
 
-        console.log('phone', phone);
-//        var placer  = actions.place,
-//            targets = actions.getTargets(params.targets);
-//
-//        core.go(placer, targets, params);
-
+        // callback
+        actions.execCallback(phone, src_url, dst_url, options);
     };
 
 }));

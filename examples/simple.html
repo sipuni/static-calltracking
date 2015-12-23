@@ -6,7 +6,8 @@
 </head>
 <body>
 
-    <div>Phone: <span class="ct_phone">+7 888 888-88-88</span></div>
+    <div>Phone: <span class="ct_phone1">+7 888 888-88-88</span></div>
+    <div>Phone: <span class="ct_phone2">+7 888 888-88-88</span></div>
 
     <script>
         wnd = {};
@@ -16,7 +17,7 @@
         wnd.document.referrer = 'http://google.com';
 
         sipuniCalltracking({
-            targets: '.ct_phone',
+            targets: ['.ct_phone1', '.ct_phone2'],
             callback: function(){console.log('callback');},
             sources: {
                 'organic':{'ref':       /(google|yandex|rambler|bing|yahoo)/ig},
@@ -24,10 +25,10 @@
                 'email':{'utm_source':  'email'}
             },
             phones: [
-                {'src':'email',     'phone1':'+73333333333', 'phone2': '+79993333333'},
-                {'src':'organic',   'phone1':'+75555555555', 'phone2': '+79995555555'},
+                {'src':'email',     'phone': ['+73333333333', '+79993333333'] },
+                {'src':'organic',   'phone': ['+75555555555', '+79995555555'] },
             ],
-            default_phone: {'phone1':'+71111111111', 'phone2': '+79991111111'}
+            default_phone: {'phone': ['+71111111111', '+79991111111']}
         }, wnd);
     </script>
 </body>
