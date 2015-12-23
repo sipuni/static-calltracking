@@ -20,16 +20,15 @@
 <script>
     sipuniCalltracking({
       targets: ['.ct_phone1', 'ct_phone2'],
-      default_value: '+79999999999',
       sources: {
-        'organic':{'ref':/(google|yandex|rambler|bing|yahoo)/ig},
-        'social':{'ref':/(twitter|facebook|linkedin|vk\.com|odnoklassniki)/ig},
-        'email':{'utm_source':'email'},
+        'ydirect':{'utm_source': 'direct.yandex.ru'},
+        'articles':{'ref':/(habrahabr|oborot\.ru)/ig}
       },
       phones: [
-        {'src':['organic', 'social'], 'phone1':'+75555555555', 'phone2': '+79995555555'},
-        {'src':'email', 'phone1':'+73333333333', 'phone2': '+79993333333'},
-      ]
+        {'src':'articles', 'phone':['+75555555555', '+79995555555']},
+        {'src':'ydirect', 'phone':['+73333333333', '+79993333333']}
+      ],
+      default_phone:{ 'phone':['+73339999999', '+79999999999']}
     });
 </script>
 ```
