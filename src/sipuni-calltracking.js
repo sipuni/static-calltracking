@@ -22,9 +22,15 @@
         default_value: null,
         callback: null,
         sources: {
-            'organic':{'ref':/(google|yandex|rambler|bing|yahoo)/ig},
-            'social':{'ref':/(twitter|facebook|linkedin|vk\.com|odnoklassniki)/ig},
-            'email':{'utm_source':'email'}
+            'organic':{'ref':/:\/\/(?:www\.)?(google|yandex|mail\.ru|search\.tut\.by|rambler|bing|yahoo)(?:\.(\w+))?/ig},
+            'social':{'ref':/:\/\/[^\/]*(twitter|t\.co|facebook|linkedin|vk\.com|odnoklassniki)/ig},
+            'email':{'utm_source':'email'},
+            'adwords':{'dst': 'gclid='},
+            'ydirect_utm':{'utm_source':'direct.yandex.ru'},
+            'ydirect_openstat':{'dst': function(subject){
+                                            var o = query.getRawParam(subject, '_openstat');
+                                            return (o && a2b(o).indexOf('direct.yandex.ru')>-1);
+                                       }}
         },
         cookie_key: 'sipunicts',
         cookie_ttl_days: 30*3
@@ -53,7 +59,7 @@
     }
 
     /**
-     * querySelectorAll for old browsers
+     * querySelectorAll for all browsers
      */
     var select = document.querySelectorAll || function(selector) {
         var style = document.styleSheets[0] || document.createStyleSheet();
@@ -68,6 +74,16 @@
     };
 
     /**
+     * Base64 decode for all browsers
+     */
+    var a2b = window.atob || function a2b(a) {
+        var b, c, d, e = {}, f = 0, g = 0, h = "", i = String.fromCharCode, j = a.length;
+        for (b = 0; 64 > b; b++) e["ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".charAt(b)] = b;
+        for (c = 0; j > c; c++) for (b = e[a.charAt(c)], f = (f << 6) + b, g += 6; g >= 8; ) ((d = 255 & f >>> (g -= 8)) || j - 2 > c) && (h += i(d));
+        return h;
+    };
+
+    /**
      * Type detection methods
      */
     var type = {
@@ -78,7 +94,7 @@
                 );
         },
 
-        isDictionary: Array.isArray || function(o) {
+        isDictionary: function(o) {
             return (
                 typeof o === 'object' && Object.prototype.toString.call(o) === '[object Object]'
                 );
@@ -104,17 +120,26 @@
     var query = {
 
         /**
-         * Returns a value of query string parameter
+         * Returns non decoded value of a query string parameter
+         * @param url URL with query string, or just query string part
+         * @param name query parameter name
+         * @returns a string with parameter value or null of no parameter exist
+         */
+        getRawParam: function(url, name){
+            var regex = new RegExp(name+"=([^&]+)");
+            var found = regex.exec(url);
+            return (found !== null ? found[1] : null);
+        },
+        /**
+         * Returns a URL-decoded value of query string parameter
          * @param url url with query string, or just query string part
          * @param name query parameter name
          * @returns a string with parameter value or null of no parameter exist
          */
         getParam: function(url, name){
-            var regex = new RegExp(name+"=([^&]+)");
-            var found = regex.exec(url);
-            return (found !== null?decodeURIComponent(found[1]).toLowerCase():null);
+            var found = query.getRawParam(url, name);
+            return (found !== null ? decodeURIComponent(found[1]) : null);
         }
-
     };
 
     /**
@@ -156,7 +181,6 @@
             var c_value = encodeURIComponent(value) + ((exdays == null) ? "" : "; expires=" + exdate.toUTCString());
             var top_domain = cookies.topDomain(window.location.hostname);
             var cookie = c_name + "=" + c_value + "; path=/" + "; domain=" + (top_domain ? '.'+top_domain : '');
-            console.log(cookie);
             document.cookie = cookie;
         },
 
@@ -210,7 +234,8 @@
             for (var prop in dict_src) {
                 var v = dict_src[prop];
                 if (type.isDictionary(v)) {
-                    dict_dst[prop] = dict.update(null, v);
+                    var d = dict_dst.hasOwnProperty(prop) ? dict_dst[prop] : null;
+                    dict_dst[prop] = dict.update(d, v);
                 } else {
                     dict_dst[prop] = v;
                 }
@@ -225,10 +250,10 @@
          * @returns a new dictionary containing both dictionaries
          */
         merge: function(dict1, dict2){
-           var result = {};
-           dict.update(result, dict1);
-           dict.update(result, dict2);
-           return result;
+            var result = {};
+            dict.update(result, dict1);
+            dict.update(result, dict2);
+            return result;
         },
 
         /**
@@ -294,7 +319,9 @@
             for (var i=0; i<phones.length; i++){
                 var phone = phones[i];
                 var src = phone['src'];
+
                 if(sources.hasOwnProperty(src)){
+
                     if(tracker.match(sources[src], src_url, dst_url)){
                         return phone;
                     }
