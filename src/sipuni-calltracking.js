@@ -1,3 +1,7 @@
+/**
+ * Static call-tracking script
+ * (c) 2015 sipuni.com
+ */
 ;(function(root, factory) {
 
     "use strict";

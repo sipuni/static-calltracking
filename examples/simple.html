@@ -10,12 +10,14 @@
     <div>Phone: <span class="ct_phone2">+7 888 888-88-88</span></div>
 
     <script>
+        // emulate window.location and document.referer for testing purposes
         wnd = {};
         wnd.location = {};
         wnd.location.href = 'http://abc.com/landing.html?_openstat=ZGlyZWN0LnlhbmRleC5ydTsxMjM0OzU2Nzg5O3lhbmRleC5ydTpwcmVtaXVt';
         wnd.document = {};
-        wnd.document.referrer = 'http://goo111gle.com';
+        wnd.document.referrer = '';
 
+        // invoke calltracking script
         sipuniCalltracking({
             targets: ['.ct_phone1', '.ct_phone2'],
             sources: {
