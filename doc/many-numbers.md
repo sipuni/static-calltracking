@@ -4,13 +4,13 @@
 ### Пример подмены нескольких номеров
 
 Добавляем CSS классы ct_phone и ct_phone2 в элементы, где будет происходить подмена номеров:
-```
+```html
     <div>Городской: <span class="ct_phone">+7 495 888-88-88</span></div>
     <div>Мобильный: <span class="ct_phone2">+7 912 888-88-88</span></div>
 ```    
 
 Настройка скрипта подмены как обычно. Лишь в поле targets добавляем CSS классы для новых номеров, и в поле phones добавляем дополнительные номера. 
-```
+```javascript
 <script>
     sipuniCalltracking({
       targets: ['.ct_phone', '.ct_phone2'],

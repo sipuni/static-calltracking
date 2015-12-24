@@ -1,6 +1,6 @@
 # Настройка правил определения трафика
 В настройках вызова скрипта подмены в поле sources задаются правила определения источников трафика. 
-```
+```javascript
     ...
     sources: {
         'ydirect':{'utm_source': 'direct.yandex.ru'},
@@ -19,18 +19,18 @@
 
 #### Пример с utm метками
 Например, если страница, нашего сайта, на которую перешел пользователь http://oursite.ru/landing.html?utm_campaign=mailchimp_2 мы можем задать правило:
-```
+```javascript
 'email': {'utm_campaign': 'mailchimp'}
 ```
 mailchimp задан как строка, значит будет происходить проверка на вхождение mailchimp в значение параметра utm_campaign
 
 Правило можно задать при помощи регулярного выражения:
-```
+```javascript
 'email': {'utm_campaign': /mailchimp/ig}
 ```
 
 Также правило можно задать в виде функции:
-```
+```javascript
 'email': {'utm_campaign': function(subject){ return subject.indefOf('mailchimp')>-1 };}
 ```
 
@@ -39,14 +39,14 @@ mailchimp задан как строка, значит будет происхо
 #### Пример со страницей источником
 Предположим, пользователь перешел на сайт со страницы http://habrahabr.ru/company/sipuni/blog/270327/
 Для определения трафика только с этой страницы можно создать правило по названием habr_article
-```
+```javascript
  'habr_article': {'ref': 'blog/270327'}
 ```
 ref - означает выполнять проверку поля реферер, искать в нем подстроку 'blog/270327'
 
 ### Правила определения трафика по умолчанию
 Для удобства по умолчанию заданы несколько правил определения трафика, которые можно использовать в конфигурации номеров телефонов. Вот список этих правил:
-```
+```javascript
     sources: {
         'organic':{'ref':/:\/\/(?:www\.)?(google|yandex|mail\.ru|search\.tut\.by|rambler|bing|yahoo)(?:\.(\w+))?/ig},
         'social':{'ref':/:\/\/[^\/]*(twitter|t\.co|facebook|linkedin|vk\.com|odnoklassniki)/ig},
