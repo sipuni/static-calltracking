@@ -105,4 +105,4 @@ ref - означает выполнять проверку поля рефере
         },
 ```
 
-![](https://github.com/sipuni/static-calltracking/blob/master/doc/img/header1.png)
+![](https://github.com/sipuni/static-calltracking/blob/master/doc/img/sipuni_logo.png)
