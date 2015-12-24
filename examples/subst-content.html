@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="../src/sipuni-calltracking.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+
+    <div>Phone: <span class="ct_phone">+7 888 888-88-88</span></div>
+
+    <h1 id="header">Как купить шуруповерт?</h1>
+
+    <script>
+        // emulate window.location and document.referer for testing purposes
+        wnd = {};
+        wnd.location = {};
+        wnd.location.href = 'http://abc.com/landing.html?_1openstat=ZGlyZWN0LnlhbmRleC5ydTsxMjM0OzU2Nzg5O3lhbmRleC5ydTpwcmVtaXVt';
+        wnd.document = {};
+        wnd.document.referrer = '';
+
+        function subst_header(phone_info){
+            console.log(phone_info);
+            if(phone_info['src']=='ydirect_openstat'){
+                var el = document.getElementById('header');
+                el.innerText = 'Покупка шуруповерта с аккумулятором';
+            }
+        }
+
+        // invoke calltracking script
+        sipuniCalltracking({
+            callback: subst_header,
+            sources: {
+                'email':{'utm_source':  'email'}
+            },
+            phones: [
+                {'src':'ydirect_openstat',  'phone': ['+73333333333']},
+                {'src':'organic',   'phone': ['+75555555555']},
+            ]
+        }, wnd);
+    </script>
+</body>
+</html>
