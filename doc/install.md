@@ -34,4 +34,4 @@
 </script>
 ```
 
-[Оглавление](https://github.com/sipuni/static-calltracking/blob/master/README.md)
+ * [Оглавление](index.md)
