@@ -41,28 +41,6 @@
     };
 
     /**
-     * Array.indexOf for old browsers
-     */
-    if (!Array.prototype.indexOf) {
-        Array.prototype.indexOf = function(searchElement, fromIndex) {
-            if (this == null) throw new TypeError('"this" is null or not defined');       // jshint ignore:line
-            var O = Object(this);
-            var len = O.length >>> 0;                                                     // jshint ignore:line
-            if (len === 0) return -1;
-            var n = +fromIndex || 0;
-            if (Math.abs(n) === Infinity) n = 0;
-            if (n >= len) return -1;
-            var k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
-            while (k < len) {
-                if (k in O && O[k] === searchElement) return k;
-                k++;
-            }
-            return -1;
-
-        };
-    }
-
-    /**
      * querySelectorAll for all browsers
      */
     var select = document.querySelectorAll || function(selector) {
@@ -115,7 +93,6 @@
                 typeof o === 'function' && Object.prototype.toString.call(o) === '[object Function]'
                 );
         }
-
     };
 
     /**
@@ -127,7 +104,7 @@
          * Returns non decoded value of a query string parameter
          * @param url URL with query string, or just query string part
          * @param name query parameter name
-         * @returns a string with parameter value or null of no parameter exist
+         * @returns string a string with parameter value or null of no parameter exist
          */
         getRawParam: function(url, name){
             var regex = new RegExp(name+"=([^&]+)");
@@ -138,7 +115,7 @@
          * Returns a URL-decoded value of query string parameter
          * @param url url with query string, or just query string part
          * @param name query parameter name
-         * @returns a string with parameter value or null of no parameter exist
+         * @returns string A string with parameter value or null of no parameter exist
          */
         getParam: function(url, name){
             var found = query.getRawParam(url, name);
@@ -154,7 +131,7 @@
         /**
          * Returns a top level domain from a subdomain
          * @param domain string with domain or subdomain
-         * @returns top level domain or empty string for the localhost
+         * @returns string top level domain or empty string for the localhost
          */
         topDomain: function(domain) {
             if (!domain) {
@@ -175,49 +152,49 @@
 
         /**
          * Sets a cookie
-         * @param c_name cookie name
+         * @param name cookie name
          * @param value cookie value
          * @param exdays cookie duration in days. put here null for the session only cookie
          */
-        set: function (c_name, value, exdays) {
+        set: function (name, value, exdays) {
             var exdate = new Date();
             exdate.setDate(exdate.getDate() + exdays);
             var c_value = encodeURIComponent(value) + ((exdays == null) ? "" : "; expires=" + exdate.toUTCString());
             var top_domain = cookies.topDomain(window.location.hostname);
-            var cookie = c_name + "=" + c_value + "; path=/" + "; domain=" + (top_domain ? '.'+top_domain : '');
+            var cookie = name + "=" + c_value + "; path=/" + "; domain=" + (top_domain ? '.'+top_domain : '');
             document.cookie = cookie;
         },
 
         /**
          * Gets a cookie value
-         * @param c_name cookie name
-         * @returns a string with cookie value or null if no cookie exist
+         * @param name cookie name
+         * @returns string A string with cookie value or null if no cookie exist
          */
-        get: function (c_name){
-            var c_value = document.cookie;
-            var c_start = c_value.indexOf(" " + c_name + "=");
-            if (c_start == -1) {
-                c_start = c_value.indexOf(c_name + "=");
+        get: function (name){
+            var val = document.cookie;
+            var start = val.indexOf(" " + name + "=");
+            if (start == -1) {
+                start = val.indexOf(name + "=");
             }
-            if (c_start == -1) {
-                c_value = null;
+            if (start == -1) {
+                val = null;
             }else{
-                c_start = c_value.indexOf("=", c_start) + 1;
-                var c_end = c_value.indexOf(";", c_start);
-                if (c_end == -1) {
-                    c_end = c_value.length;
+                start = val.indexOf("=", start) + 1;
+                var end = val.indexOf(";", start);
+                if (end == -1) {
+                    end = val.length;
                 }
-                c_value = decodeURIComponent(c_value.substring(c_start,c_end));
+                val = decodeURIComponent(val.substring(start, end));
             }
-            return c_value;
+            return val;
         },
 
         /**
          * Deletes a cookie
-         * @param c_name cookie name to delete
+         * @param name cookie name to delete
          */
-        delete: function (c_name){
-            ct_set_cookie(c_name, null, -10);
+        delete: function (name){
+            cookies.set(name, null, -10);
         }
 
     };
@@ -251,7 +228,7 @@
          * Merges two dictionaries and creates a new dictionary with results.
          * @param dict1 first dictionary
          * @param dict2 second dictionar
-         * @returns a new dictionary containing both dictionaries
+         * @returns object A new dictionary containing both dictionaries
          */
         merge: function(dict1, dict2){
             var result = {};
@@ -263,7 +240,7 @@
         /**
          * Returns dictionary keys
          * @param dict dictionary to search for
-         * @returns an array with keys
+         * @returns Array An array with keys
          */
         keys: function(dictionary){
             var keys = [];
@@ -377,7 +354,6 @@
             }
             return null;
         }
-
     };
 
 

@@ -3,33 +3,29 @@
 <head>
     <title></title>
     <script src="../src/sipuni-calltracking.js"></script>
+    <meta charset="utf-8">
 </head>
 <body>
 
-    <div>Phone: <span class="ct_phone1">+7 888 888-88-88</span></div>
-    <div>Phone: <span class="ct_phone2">+7 888 888-88-88</span></div>
+    <div>Phone: <span class="ct_phone">+7 888 888-88-88</span></div>
 
     <script>
         // emulate window.location and document.referer for testing purposes
         wnd = {};
         wnd.location = {};
-        wnd.location.href = 'http://abc.com/landing.html?_openstat=ZGlyZWN0LnlhbmRleC5ydTsxMjM0OzU2Nzg5O3lhbmRleC5ydTpwcmVtaXVt';
+        wnd.location.href = 'http://abc.com/landing.html';
         wnd.document = {};
-        wnd.document.referrer = '';
+        wnd.document.referrer = 'http://google.com';
 
         // invoke calltracking script
         sipuniCalltracking({
-            targets: ['.ct_phone1', '.ct_phone2'],
             sources: {
-                'organic':{'ref':       /(google|yandex|rambler|bing|yahoo)/ig},
-                'social':{'ref':        /(twitter|facebook|linkedin|odnoklassniki)/ig},
                 'email':{'utm_source':  'email'}
             },
             phones: [
-                {'src':'ydirect_openstat',     'phone': ['+73333333333', '+79993333333'] },
-                {'src':'organic',   'phone': ['+75555555555', '+79995555555'] },
-            ],
-            default_phone: {'phone': ['+71111111111', '+79991111111']}
+                {'src':'email',     'phone': ['+73333333333'] },
+                {'src':'organic',   'phone': ['+75555555555'] },
+            ]
         }, wnd);
     </script>
 </body>
