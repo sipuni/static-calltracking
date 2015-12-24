@@ -40,5 +40,5 @@
  * [Подмена конента страницы](subst-content.md)
 
 
-![](img/sipuni_logo.png) 
+[![](doc/img/sipuni_logo.png)](http://calltracking.sipuni.com)
  

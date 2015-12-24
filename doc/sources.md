@@ -66,4 +66,4 @@ ref - означает выполнять проверку поля рефере
  * [Подмена контента страницы](subst-content.md)
 
 
-![](img/sipuni_logo.png)
+[![](doc/img/sipuni_logo.png)](http://calltracking.sipuni.com)
