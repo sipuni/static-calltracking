@@ -104,3 +104,5 @@ ref - означает выполнять проверку поля рефере
                                     }}
         },
 ```
+
+![](https://github.com/sipuni/static-calltracking/blob/master/doc/img/header1.png)
