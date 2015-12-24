@@ -52,4 +52,4 @@
 * [Отображение нескольких телефонов](many-numbers.md)
 
 
-[![](doc/img/sipuni_logo.png)](http://calltracking.sipuni.com)
+[![](img/sipuni_logo.png)](http://calltracking.sipuni.com)
