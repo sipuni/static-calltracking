@@ -49,5 +49,5 @@
  * [Подмена конента страницы](subst-content.md)
  
 
-![](doc/img/sipuni_logo.md) 
+![](doc/img/sipuni_logo.png) 
  
