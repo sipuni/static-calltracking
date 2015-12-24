@@ -1,5 +1,5 @@
 # Статический коллтрекинг
-![](https://github.com/sipuni/static-calltracking/blob/master/doc/img/header1.png)
+![](doc/img/header1.png)
 
 
 ### Описание
@@ -18,91 +18,36 @@
 ### Пример использования
 Предположим, у нас на сайте отображатся два номера телефона, и нам нужно отследить трафик с Яндекс Директ и двух сайтов: habrahabr.ru и oborot.ru
 
-Добавляем CSS классы ct_phone1 и ct_phone2 в элементах, где будет происходить подмена номеров:
+Добавляем CSS классы ct_phone в элементах, где будет происходить подмена номеров:
 ```
     <div>Тел. 1: <span class="ct_phone1">+7 888 888-88-88</span></div>
-    <div>Тел. 2: <span class="ct_phone2">+7 999 888-88-88</span></div>
 ```    
 
 Настраиваем вызов скрипта подмены. 
-В поле targets задаем имена CSS классов, которые мы добавили в предыдущем шаге. Имена обязательно с точкой.
-В поле sources задаем правила определения источников трафика. Подробнее о настройке правил см. далее. 
-В поле phones задаем названия источников трафика, и соответсвующие им номера телефонов. 
+ * В поле sources задаем правила определения источников трафика. Подробнее о настройке правил см. далее. 
+ * В поле phones задаем названия источников трафика, и соответсвующие им номера телефонов. 
 Вызов этого скрипта должен происходить после HTML элементов содержащих номера телефонов, или в событии готовности DOM модели.
 ```
 <script>
     sipuniCalltracking({
-      targets: ['.ct_phone1', 'ct_phone2'],
       sources: {
         'ydirect':{'utm_source': 'direct.yandex.ru'},
         'articles':{'ref':/(habrahabr|oborot\.ru)/ig}
       },
       phones: [
-        {'src':'articles', 'phone':['+75555555555', '+79995555555']},
-        {'src':'ydirect', 'phone':['+73333333333', '+79993333333']}
+        {'src':'articles', 'phone':['+75555555555']},
+        {'src':'ydirect', 'phone':['+73333333333']}
       ],
-      default_phone:{ 'phone':['+73339999999', '+79999999999']}
     });
 </script>
 ```
 
-### Настройка правил определения трафика
-В настройках вызова скрипта подмены в поле sources задаются правила определения источников трафика. 
-```
-    ...
-    sources: {
-        'ydirect':{'utm_source': 'direct.yandex.ru'},
-        'articles':{'ref':/(habrahabr|oborot\.ru)/ig},
-        'facebook':{'ref': function(subject) { return subject.match(/facebook/ig); }},
-        'openstat':{'dst': /_openstat/ig },
-      },
-    ...  
-```      
-Ключ ydirect, articles и другие это название источника трафика. Это название потом используется в списке телефонов.
+### Оглавление
+ * [Установка и настройка](install.md)
+ * [Настройка источников трафика](sources.md)
+ * [Отображение нескольких телефонов](many-numbers.md)
+ * [Подмена конента страницы](subst-content.md)
+ 
 
-В описании правила может использоваться одно из нескольких полей ref - реферер, dst - адрес страницы назначения и  utm_ - проверка будет происходить только в этом параметре.
-
-#### Пример с utm метками
-Например, если страница, нашего сайта, на которую перешел пользователь http://oursite.ru/landing.html?utm_campaign=mailchimp_2 мы можем задать правило:
-```
-'email': {'utm_campaign': 'mailchimp'}
-```
-mailchimp задан как строка, значит будет происходить проверка на вхождение mailchimp в значение параметра utm_campaign
-
-Правило можно задать при помощи регулярного выражения:
-```
-'email': {'utm_campaign': /mailchimp/ig}
-```
-
-Также правило можно задать в виде функции:
-```
-'email': {'utm_campaign': function(subject){ return subject.indefOf('mailchimp')>-1 };}
-```
-
-Конечно, варианты с регулярным выражением и функцией в данной ситуации избыточные, они приведены для примера.
-
-#### Пример со страницей источником
-Предположим, пользователь перешел на сайт со страницы http://habrahabr.ru/company/sipuni/blog/270327/
-Для определения трафика только с этой страницы можно создать правило по названием habr_article
-```
- 'habr_article': {'ref': 'blog/270327'}
-```
-ref - означает выполнять проверку поля реферер, искать в нем подстроку 'blog/270327'
-
-### Правила определения трафика по умолчанию
-Для удобства по умолчанию заданы несколько правил определения трафика, которые можно использовать в конфигурации номеров телефонов. Вот список этих правил:
-```
-    sources: {
-        'organic':{'ref':/:\/\/(?:www\.)?(google|yandex|mail\.ru|search\.tut\.by|rambler|bing|yahoo)(?:\.(\w+))?/ig},
-        'social':{'ref':/:\/\/[^\/]*(twitter|t\.co|facebook|linkedin|vk\.com|odnoklassniki)/ig},
-        'email':{'utm_source':'email'},
-        'adwords':{'dst': 'gclid='},
-        'ydirect_utm':{'utm_source':'direct.yandex.ru'},
-        'ydirect_openstat':{'dst': function(subject){
-                                      var o = query.getRawParam(subject, '_openstat');
-                                      return (o && a2b(o).indexOf('direct.yandex.ru')>-1);
-                                    }}
-        },
-```
-
-![](https://github.com/sipuni/static-calltracking/blob/master/doc/img/sipuni_logo.png)
+![](doc/img/sipuni_logo.md) 
+ 
