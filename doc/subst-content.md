@@ -6,12 +6,12 @@
 в нее передается словарь с выбранным номером.
 
 В нужном заголовке добавляем атрибут id:
-```
+```html
 <h1 id="header">Как купить шуруповерт?</h1>
 ```
 
 Добавляем функцию подмены заголовка. 
-```
+```javascript
 <script>
   function subst_header(phone_info){
       console.log(phone_info);
@@ -24,7 +24,7 @@
 ```
 
 В настройках скрипта добавляем поле callback:
-```
+```javascript
 <script>
   sipuniCalltracking({
     callback: subst_header,
