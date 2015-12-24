@@ -25,6 +25,7 @@
         targets: ['.ct_phone'],
         default_value: null,
         callback: null,
+        pattern: '+9 (999) 999-99-99',
         sources: {
             'organic':{'ref':/:\/\/(?:www\.)?(google|yandex|mail\.ru|search\.tut\.by|rambler|bing|yahoo)(?:\.(\w+))?/ig},
             'social':{'ref':/:\/\/[^\/]*(twitter|t\.co|facebook|linkedin|vk\.com|odnoklassniki)/ig},
@@ -356,6 +357,60 @@
         }
     };
 
+    /**
+     * Phone number formatting support
+     */
+    var template = {
+
+        /**
+         * Formats the phone number, removes a plus sign for the 8-800 numbers.
+         * @param string phone number
+         * @param string pattern, 9 as a placeholder. E.g. +9 (999) 999-99-99
+         * @returns {string} formatter phone number
+         */
+        format_number: function (num, pattern){
+
+            if(num.toString().match(/^8800/) && pattern && pattern[0]=='+'){
+                pattern = pattern.replace(/^\+/, '');
+            }
+            return template.format(num, pattern);
+        },
+
+        /**
+         * Formats the phone number using the pattern
+         * @param string phone number
+         * @param string pattern, 9 as a placeholder. E.g. +9 (999) 999-99-99
+         * @returns {string} formatter phone number
+         */
+        format: function (num, pattern){
+
+            if(!(typeof(num) === "string")){
+                num = num.toString();
+            }
+
+            if(!num)
+                return '';
+
+            if(typeof(pattern) === "undefined" || !pattern)
+                return num;
+
+            var arr_res=[];
+            var num_counter = num.length-1;
+
+            for(var i=pattern.length-1; i>=0; i--){
+                var s = pattern[i];
+                if(s=='9'){
+                    if(num_counter>=0){
+                        arr_res.push(num[num_counter--]);
+                    }
+                }
+                else{
+                    arr_res.push(s);
+                }
+            }
+            return arr_res.reverse().join('');
+        }
+    };
 
     return function(user_options, wnd) {
 
@@ -398,9 +453,10 @@
         if (phone){
             var targets = options['targets'];
             var numbers = phone['phone'];
-            for(var i=0, l1=targets.length, l2=numbers.length; i<Math.min(l1, l2); i++){
+            for(var i=0, len=Math.min(targets.length, numbers.length); i<len; i++){
                 var elements = actions.getTargets(targets[i]);
-                actions.place(elements, numbers[i]);
+                var number = template.format_number(numbers[i], options['pattern']);
+                actions.place(elements, number);
             }
         }
 
