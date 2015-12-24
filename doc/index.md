@@ -15,4 +15,4 @@
 
 
 
-![](https://github.com/sipuni/static-calltracking/blob/master/doc/img/sipuni_logo.png)
+![](img/sipuni_logo.png)
