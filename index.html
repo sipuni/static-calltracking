@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Статический коллтрекинг by sipuni</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Статический коллтрекинг</h1>
+        <p class="header">Скрипт подмены номеров для статического коллтрекинга</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/sipuni/static-calltracking/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/sipuni/static-calltracking/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/sipuni/static-calltracking">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/sipuni">sipuni</a></p>
+
+
+      </header>
+      <section>
+        <h1>
+<a id="Статический-коллтрекинг" class="anchor" href="#%D0%A1%D1%82%D0%B0%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9-%D0%BA%D0%BE%D0%BB%D0%BB%D1%82%D1%80%D0%B5%D0%BA%D0%B8%D0%BD%D0%B3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Статический коллтрекинг</h1>
+
+<p><img src="doc/img/header1.png" alt=""></p>
+
+<h3>
+<a id="Описание" class="anchor" href="#%D0%9E%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5" aria-hidden="true"><span class="octicon octicon-link"></span></a>Описание</h3>
+
+<p>Этот код подменяет номера телефонов на страницах сайта в зависимости от того, с какого сайта или с какими utm метками пришел посетитель на ваш сайт. Номера для подмены вы задаете самостоятельно. Важно, чтобы у вас была возможность получить статистику звонков на все ваши номера. Благодаря подмене номеров, по статистике звонков вы сможете определить какие источники траффика дают наибольшее количество звонков. </p>
+
+<h3>
+<a id="Особенности" class="anchor" href="#%D0%9E%D1%81%D0%BE%D0%B1%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D0%B8" aria-hidden="true"><span class="octicon octicon-link"></span></a>Особенности</h3>
+
+<ul>
+<li>Есть список предопределенных основных источников траффика (органика, соц.сети, контекст).</li>
+<li>Умеет подменять заголовки и другой контент на странице.</li>
+<li>Позволяет подменять несколько номеров одновременно.</li>
+</ul>
+
+<h3>
+<a id="Установка" class="anchor" href="#%D0%A3%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0" aria-hidden="true"><span class="octicon octicon-link"></span></a>Установка</h3>
+
+<p>Сохраните скрипт sipuni-calltracking.min.js и подключите его на странице.</p>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">'</span>/js/sipuni-calltracking.min.js<span class="pl-pds">'</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+
+<h3>
+<a id="Пример-использования" class="anchor" href="#%D0%9F%D1%80%D0%B8%D0%BC%D0%B5%D1%80-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F" aria-hidden="true"><span class="octicon octicon-link"></span></a>Пример использования</h3>
+
+<p>Предположим, у нас на сайте отображатся два номера телефона, и нам нужно отследить трафик с Яндекс Директ и двух сайтов: habrahabr.ru и oborot.ru</p>
+
+<p>Добавляем CSS классы ct_phone в элементах, где будет происходить подмена номеров:</p>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">div</span>&gt;Тел. 1: &lt;<span class="pl-ent">span</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>ct_phone1<span class="pl-pds">"</span></span>&gt;+7 888 888-88-88&lt;/<span class="pl-ent">span</span>&gt;&lt;/<span class="pl-ent">div</span>&gt;</pre></div>
+
+<p>Настраиваем вызов скрипта подмены. </p>
+
+<ul>
+<li>В поле sources задаем правила определения источников трафика. Подробнее о настройке правил см. далее. </li>
+<li>В поле phones задаем названия источников трафика, и соответсвующие им номера телефонов. 
+Вызов этого скрипта должен происходить после HTML элементов содержащих номера телефонов, или в событии готовности DOM модели.</li>
+</ul>
+
+<div class="highlight highlight-text-html-basic"><pre><span class="pl-s1">&lt;<span class="pl-ent">script</span>&gt;</span>
+<span class="pl-s1">    <span class="pl-en">sipuniCalltracking</span>({</span>
+<span class="pl-s1">      sources<span class="pl-k">:</span> {</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>ydirect<span class="pl-pds">'</span></span><span class="pl-k">:</span>{<span class="pl-s"><span class="pl-pds">'</span>utm_source<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>direct.yandex.ru<span class="pl-pds">'</span></span>},</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>articles<span class="pl-pds">'</span></span><span class="pl-k">:</span>{<span class="pl-s"><span class="pl-pds">'</span>ref<span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-sr"><span class="pl-pds">/</span>(habrahabr<span class="pl-k">|</span>oborot<span class="pl-cce">\.</span>ru)<span class="pl-pds">/</span>ig</span>}</span>
+<span class="pl-s1">      },</span>
+<span class="pl-s1">      phones<span class="pl-k">:</span> [</span>
+<span class="pl-s1">        {<span class="pl-s"><span class="pl-pds">'</span>src<span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">'</span>articles<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>phone<span class="pl-pds">'</span></span><span class="pl-k">:</span>[<span class="pl-s"><span class="pl-pds">'</span>+75555555555<span class="pl-pds">'</span></span>]},</span>
+<span class="pl-s1">        {<span class="pl-s"><span class="pl-pds">'</span>src<span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">'</span>ydirect<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>phone<span class="pl-pds">'</span></span><span class="pl-k">:</span>[<span class="pl-s"><span class="pl-pds">'</span>+73333333333<span class="pl-pds">'</span></span>]}</span>
+<span class="pl-s1">      ],</span>
+<span class="pl-s1">    });</span>
+<span class="pl-s1">&lt;/<span class="pl-ent">script</span>&gt;</span></pre></div>
+
+<h3>
+<a id="Оглавление" class="anchor" href="#%D0%9E%D0%B3%D0%BB%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5" aria-hidden="true"><span class="octicon octicon-link"></span></a>Оглавление</h3>
+
+<ul>
+<li><a href="doc/install.md">Установка и настройка</a></li>
+<li><a href="doc/sources.md">Настройка источников трафика</a></li>
+<li><a href="doc/many-numbers.md">Отображение нескольких телефонов</a></li>
+<li><a href="doc/subst-content.md">Подмена конента страницы</a></li>
+</ul>
+
+<p><a href="http://calltracking.sipuni.com"><img src="doc/img/sipuni_logo.png" alt=""></a> </p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		          <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-3786987-11");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
