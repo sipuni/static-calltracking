@@ -38,7 +38,7 @@
  * [Оглавление](index.md)
  * [Настройка источников трафика](sources.md)
  * [Отображение нескольких телефонов](many-numbers.md)
- * [Подмена конента страницы](subst-content.md)
+ * [Подмена контента страницы](subst-content.md)
 
 
 [![](img/sipuni_logo.png)](http://calltracking.sipuni.com)

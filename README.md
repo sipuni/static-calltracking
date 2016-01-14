@@ -11,9 +11,9 @@
  * Позволяет подменять несколько номеров одновременно.
 
 ### Установка
-Сохраните скрипт sipuni-calltracking.min.js и подключите его на странице.
+Сохраните скрипт sipuni-calltracking.js и подключите его на странице.
 ```html
-<script src='/js/sipuni-calltracking.min.js'></script>
+<script src='/js/sipuni-calltracking.js'></script>
 ```
 
 ### Пример использования
@@ -47,7 +47,7 @@
  * [Установка и настройка](doc/install.md)
  * [Настройка источников трафика](doc/sources.md)
  * [Отображение нескольких телефонов](doc/many-numbers.md)
- * [Подмена конента страницы](doc/subst-content.md)
+ * [Подмена контента страницы](doc/subst-content.md)
  
 
 [![](doc/img/sipuni_logo.png)](http://calltracking.sipuni.com) 
