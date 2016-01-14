@@ -19,9 +19,8 @@
         wnd.document = {};
         wnd.document.referrer = 'http://google.com';
 
-        function subst_header(phone_info){
-            console.log(phone_info);
-            if(phone_info['src']=='organic'){
+        function subst_header(phone, src_url, dst_url, options){
+            if(phone['src']=='organic'){
                 var el = document.getElementById('header');
                 el.innerText = 'Покупка шуруповерта с аккумулятором';
             }
