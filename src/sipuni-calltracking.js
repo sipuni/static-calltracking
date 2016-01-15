@@ -1,6 +1,7 @@
 /**
  * Static call-tracking script
  * (c) 2015 sipuni.com
+ * version 1.1
  */
 ;(function(root, factory) {
 
@@ -461,7 +462,9 @@
         }
 
         // callback
-        actions.execCallback(phone, src_url, dst_url, options);
+        if(phone){
+            actions.execCallback(phone, src_url, dst_url, options);
+        }
     };
 
 }));
