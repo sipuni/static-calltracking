@@ -120,7 +120,7 @@
          */
         getParam: function(url, name){
             var found = query.getRawParam(url, name);
-            return (found !== null ? decodeURIComponent(found[1]) : null);
+            return (found !== null ? decodeURIComponent(found) : null);
         }
     };
 
