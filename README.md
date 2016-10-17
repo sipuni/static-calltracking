@@ -39,7 +39,7 @@
         {'src':'articles', 'phone':['+75555555555']},
         {'src':'ydirect', 'phone':['+73333333333']}
       ],
-    });
+    }, window);
 </script>
 ```
 
