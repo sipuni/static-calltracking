@@ -50,6 +50,7 @@
 * [Установка и настройка](install.md)
 * [Настройка источников трафика](sources.md)
 * [Отображение нескольких телефонов](many-numbers.md)
+* [Шаблоны отображени номера](patterns.md)
 
 
 [![](img/sipuni_logo.png)](http://calltracking.sipuni.com)

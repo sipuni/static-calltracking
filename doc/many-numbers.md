@@ -38,6 +38,7 @@
  * [Установка и настройка](install.md)
  * [Настройка источников трафика](sources.md)
  * [Подмена контента страницы](subst-content.md)
+ * [Шаблоны отображени номера](patterns.md)
  
 
 [![](img/sipuni_logo.png)](http://calltracking.sipuni.com)

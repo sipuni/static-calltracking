@@ -64,6 +64,7 @@ ref - означает выполнять проверку поля рефере
  * [Установка и настройка](install.md)
  * [Отображение нескольких телефонов](many-numbers.md)
  * [Подмена контента страницы](subst-content.md)
+ * [Шаблоны отображени номера](patterns.md)
 
 
 [![](img/sipuni_logo.png)](http://calltracking.sipuni.com)
