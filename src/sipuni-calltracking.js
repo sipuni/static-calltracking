@@ -1,7 +1,7 @@
 /**
  * Static call-tracking script
- * (c) 2015 sipuni.com
- * version 1.1
+ * (c) 2015-2017 sipuni.com
+ * version 2.0
  */
 ;(function(root, factory) {
 
@@ -26,7 +26,7 @@
         targets: ['.ct_phone'],
         default_value: null,
         callback: null,
-        pattern: '+9 (999) 999-99-99',
+        pattern: '+# (###) ###-##-##',
         sources: {
             'organic':{'ref':/:\/\/(?:www\.)?(google|yandex|mail\.ru|search\.tut\.by|rambler|bing|yahoo)(?:\.(\w+))?/ig},
             'social':{'ref':/:\/\/[^\/]*(twitter|t\.co|facebook|linkedin|vk\.com|odnoklassniki)/ig},
@@ -400,7 +400,7 @@
 
             for(var i=pattern.length-1; i>=0; i--){
                 var s = pattern[i];
-                if(s=='9'){
+                if(s=='#'){
                     if(num_counter>=0){
                         arr_res.push(num[num_counter--]);
                     }
