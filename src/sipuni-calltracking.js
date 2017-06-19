@@ -282,10 +282,10 @@
             return select.call(document, selectors);
         },
 
-        execCallback: function(phone, src_url, dst_url, options) {
+        execCallback: function(phone, src_url, dst_url, options, template) {
             var cb = dict.getVal(options, 'callback', null);
             if (cb && type.isFunction(cb)){
-                return cb(phone, src_url, dst_url, options);
+                return cb(phone, src_url, dst_url, options, template);
             }
             return null;
         }
@@ -463,7 +463,7 @@
 
         // callback
         if(phone){
-            actions.execCallback(phone, src_url, dst_url, options);
+            actions.execCallback(phone, src_url, dst_url, options, template);
         }
     };
 
