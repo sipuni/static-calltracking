@@ -24,7 +24,6 @@
      */
     var default_options = {
         targets: ['.ct_phone'],
-        default_value: null,
         callback: null,
         pattern: '+# (###) ###-##-##',
         sources: {
@@ -443,11 +442,6 @@
             if(phone !== null){
                 cookies.set(options['cookie_key'], phone['src'], options['cookie_ttl_days']);
             }
-        }
-
-        // use default
-        if(phone === null){
-            phone = options['default_phone'];
         }
 
         // insert phone numbers
