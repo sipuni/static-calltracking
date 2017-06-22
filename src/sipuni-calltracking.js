@@ -456,9 +456,7 @@
         }
 
         // callback
-        if(phone){
-            actions.execCallback(phone, src_url, dst_url, options, template);
-        }
+        actions.execCallback(phone, src_url, dst_url, options, template);
     };
 
 }));
